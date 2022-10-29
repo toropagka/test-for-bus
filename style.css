@@ -1,0 +1,351 @@
+html {
+  max-width: 1920px;
+  font-family: 'Arial';
+  font-style: normal;
+}
+
+.header {
+  padding: 0 380px;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.15);
+}
+button {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 18px;
+  cursor: pointer;
+}
+
+.header-contacts {
+  margin: auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.header-contacts--svg {
+  margin: auto;
+}
+.header-contacts--text {
+  display: inline-block;
+  margin: auto;
+  color: #005bfe;
+  font-size: 18px;
+}
+.header-button {
+  margin: auto;
+  display: flex;
+  gap: 16px;
+}
+
+.header button {
+  border-radius: 6px;
+  height: 38px;
+  color: white;
+  border: none;
+  padding: 0 13px;
+}
+
+.header-button--red {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  background: #f81155;
+  width: 178px;
+  text-align: left;
+}
+.header-button--red:hover {
+  background: #d1003e;
+}
+.header-button--red span {
+  margin-bottom: -3px;
+}
+
+.header-button--blue {
+  background: #005bfe;
+}
+.header-button--blue:hover {
+  background: #0047c6;
+}
+
+/*main styles*/
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+.main-text {
+  display: inline-block;
+  margin: 35vh auto 0;
+
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 18px;
+  opacity: 0.3;
+}
+
+.modal {
+  position: fixed; /* фиксированное положение */
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5); /* цвет фона */
+  z-index: 10;
+  margin: 0;
+  padding: 0;
+  display: none;
+}
+/* при отображении модального окно */
+
+/* свойства для блока, содержащего контент модального окна */
+.modal-content {
+  margin: 0px;
+  width: 312px;
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: #fff;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0.3rem;
+  outline: 0;
+  height: 100vh;
+  -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+/* свойства для заголовка модального окна */
+.modal-header {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 70px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.modal-title {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 120%;
+}
+/* свойства для кнопки "Закрыть" */
+.close {
+  height: 24px;
+  background: #fff;
+  opacity: 0.3;
+  fill: #fff;
+}
+/* свойства для кнопки "Закрыть" при нахождении её в фокусе или наведении */
+.close:focus svg rect,
+.close:hover svg rect {
+  fill: rgba(0, 0, 0, 0.5);
+  border-radius: 6px;
+  cursor: pointer;
+}
+.close:focus svg path,
+.close:hover svg path {
+  color: rgba(0, 0, 0, 0.3);
+}
+/* свойства для блока, содержащего основное содержимое окна */
+.modal-body {
+  position: relative;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  padding: 15px;
+  overflow: auto;
+}
+
+.group-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.group-list--item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.item-input {
+  display: none;
+}
+.item-name {
+  display: flex;
+  align-items: center;
+  width: 214px;
+  height: 38px;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+}
+.item-name span {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  margin-left: 12px;
+}
+.item-icon {
+  box-sizing: border-box;
+  width: 38px;
+  height: 38px;
+  background: none;
+  border: none;
+  padding: 0;
+}
+.item-icon svg rect {
+  opacity: 0.1;
+  stroke: black;
+}
+.item-icon svg path {
+  fill: black;
+  opacity: 0.3;
+}
+.item-icon:hover svg path {
+  fill: white;
+  opacity: 1;
+}
+.item-icon:hover svg {
+  background: #d1003e;
+  border-radius: 6px;
+}
+.item-name--input {
+  box-sizing: border-box;
+  padding: 0 0 0 12px;
+  border: none;
+}
+.group-button {
+  margin-bottom: 24px;
+  margin-right: 24px;
+  display: flex;
+  justify-content: end;
+  gap: 12px;
+}
+.group-button button {
+  border: none;
+  padding: 10px 14px;
+}
+.group-button--add {
+  color: #005bfe;
+  background: none;
+}
+.group-button--add:hover {
+  background: rgba(0, 91, 254, 0.1);
+  border-radius: 6px;
+}
+.group-button--save {
+  background: #005bfe;
+  border-radius: 6px;
+  color: #fff;
+}
+.group-button--save:hover {
+  background: #0047c6;
+}
+
+/*styles for contact modal*/
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-item {
+  width: 264px;
+}
+.open {
+  display: block;
+}
+.hidden {
+  display: none;
+}
+
+/* вариант с непустым списком */
+.main-container {
+  width: 1160px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  padding: 0 24px;
+}
+.main-dropdown_button {
+  position: relative;
+  width: 100%;
+  height: 70px;
+  text-align: left;
+  border: none;
+  background: #fff;
+  font-size: 18px;
+  line-height: 22px;
+  color: #005bfe;
+}
+.main-container .main-dropdown_button::after {
+  position: absolute;
+  content: '';
+  width: 7.4px;
+  height: 7.4px;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%) rotate(45deg);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+  border-right: 2px solid rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: border-color 0.4s;
+}
+
+.main-container.active .main-dropdown_button::after {
+  border: none;
+  border-left: 2px solid rgba(0, 0, 0, 0.3);
+  border-top: 2px solid rgba(0, 0, 0, 0.3);
+}
+
+.item-icon--blue:hover svg {
+  background: #005bfe;
+  border-radius: 6px;
+}
+.main-option-container {
+  display: flex;
+  flex-direction: column;
+}
+.option {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+.main-container--name {
+  color: rgba(0, 0, 0, 0.5);
+}
+.main-container--number {
+  text-align: left;
+  margin-right: 16px;
+}
+.main-container--buttons {
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
