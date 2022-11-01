@@ -5,12 +5,21 @@ html {
 }
 
 .header {
-  padding: 0 380px;
   height: 70px;
-  display: flex;
-  justify-content: space-between;
   font-weight: 700;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  margin-bottom: 56px;
+}
+.container {
+  max-width: 1160px;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
 }
 button {
   font-weight: 700;
@@ -20,7 +29,6 @@ button {
 }
 
 .header-contacts {
-  margin: auto;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -35,8 +43,8 @@ button {
   font-size: 18px;
 }
 .header-button {
-  margin: auto;
   display: flex;
+  margin: auto 0;
   gap: 16px;
 }
 
@@ -71,12 +79,12 @@ button {
 }
 
 /*main styles*/
-main {
+/* main {
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
-}
+} */
 .main-text {
   display: inline-block;
   margin: 35vh auto 0;
@@ -183,6 +191,9 @@ main {
 .group-list {
   list-style-type: none;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .group-list--item {
@@ -274,15 +285,12 @@ main {
 
 .form-item {
   width: 264px;
-}
-.open {
-  display: block;
-}
-.hidden {
-  display: none;
+  color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
 }
 
 /* вариант с непустым списком */
+
 .main-container {
   width: 1160px;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
@@ -300,26 +308,16 @@ main {
   line-height: 22px;
   color: #005bfe;
 }
-.main-container .main-dropdown_button::after {
+.main-container .chevron-icon {
   position: absolute;
-  content: '';
-  width: 7.4px;
-  height: 7.4px;
+  left: calc(100% - 10px);
   top: 50%;
-  right: 15px;
-  transform: translateY(-50%) rotate(45deg);
-  border-bottom: 2px solid rgba(0, 0, 0, 0.3);
-  border-right: 2px solid rgba(0, 0, 0, 0.3);
-  cursor: pointer;
-  transition: border-color 0.4s;
+  transform: translate(-100%, -50%);
+  transition: all 0.5s ease;
 }
-
-.main-container.active .main-dropdown_button::after {
-  border: none;
-  border-left: 2px solid rgba(0, 0, 0, 0.3);
-  border-top: 2px solid rgba(0, 0, 0, 0.3);
+.main-container.active .chevron-icon {
+  transform: translate(-100%, -50%) rotate(180deg);
 }
-
 .item-icon--blue:hover svg {
   background: #005bfe;
   border-radius: 6px;
@@ -327,13 +325,18 @@ main {
 .main-option-container {
   display: flex;
   flex-direction: column;
+  list-style-type: none;
+  padding: 0;
 }
 .option {
   height: 70px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+.option:not(:last-child) {
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+  border-top: 1px solid rgba(0, 0, 0, 0.3);
 }
 .main-container--name {
   color: rgba(0, 0, 0, 0.5);
@@ -344,8 +347,13 @@ main {
 }
 .main-container--buttons {
   box-sizing: border-box;
-
   display: flex;
   align-items: center;
   gap: 8px;
+}
+.open {
+  display: block;
+}
+.hidden {
+  display: none;
 }
