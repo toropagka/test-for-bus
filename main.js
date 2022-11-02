@@ -1,4 +1,25 @@
 'use strict';
+// unique id
+// переписать на класс
+let guidFactory = (function () {
+  function getRandomString() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  function gen(t) {
+    let result = '';
+    for (let i = 0; i < t; ++i) result += getRandomString();
+    return result;
+  }
+
+  return {
+    create: function () {
+      return [gen(2), gen(1), gen(1), gen(1), gen(3)].join('-');
+    },
+  };
+})();
+
 let openGroupButton = document.getElementById('groupButton');
 openGroupButton.addEventListener('click', () => {
   document.querySelector('#openGroupModal').classList.add('open');
@@ -35,14 +56,23 @@ select.onclick = () => {
   optionsContainer.classList.toggle('hidden');
 };
 
-let groupList = document.querySelector('.group-list');
-let groupsArray = ['friends', 'family', 'sgfsgdsdfg', 'gdgdg'];
+let groupList = document.getElementById('groupList');
+let groupsArray = [
+  {
+    id: guidFactory.create(1),
+    groupName: 'friends',
+  },
+  {
+    id: guidFactory.create(1),
+    groupName: 'family',
+  },
+];
 function renderGroupList() {
   return (groupList.innerHTML = groupsArray
     .map(
-      (el) => `  <li class="group-list--item">
-  <div class="item-name"><span>${el}</span></div>
-  <button type="button" class="item-icon"><svg width="38" height="38" viewBox="0 0 38 38" fill="none"
+      (el) => `<li class="group-list--item">
+  <div class="item-name"><span>${el.groupName}</span></div>
+  <button type="button" class="item-icon" data-delete=true id='${el.id}'><svg width="38" height="38" viewBox="0 0 38 38" fill="none"
      xmlns="http://www.w3.org/2000/svg">
       <rect x="0.5" y="0.5" width="37" height="37" rx="5.5" />
       <g clip-path="url(#clip0_1894_238)">
@@ -61,31 +91,26 @@ function renderGroupList() {
     .join(''));
 }
 renderGroupList();
-// unique id
-// переписать на класс
-let guidFactory = (function () {
-  function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  }
-  function gen(t) {
-    let result = '';
-    for (let i = 0; i < t; ++i) result += s4();
-    return result;
-  }
-
-  return {
-    create: function () {
-      return [gen(2), gen(1), gen(1), gen(1), gen(3)].join('-');
-    },
-  };
-})();
-console.log(guidFactory.create());
 
 // добавление группы в массив
 let groupInput = document.querySelector('#addGroupInput');
 groupInput.addEventListener('keydown', (e) => {
-  e.keyCode === 13 ? groupsArray.push(groupInput.value) : undefined;
+  if (e.keyCode === 13 && groupInput.value.length) {
+    groupsArray.push({
+      id: guidFactory.create(1),
+      groupName: groupInput.value,
+    });
+    renderGroupList();
+    groupInput.value = '';
+  }
+});
+
+// удаление группы
+groupList.addEventListener('click', (e) => {
+  if (e.target.dataset) {
+    groupsArray.forEach(function (el, i) {
+      if (el.id == e.target.id) groupsArray.splice(i, 1);
+    });
+  }
   renderGroupList();
 });

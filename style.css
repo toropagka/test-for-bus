@@ -79,12 +79,6 @@ button {
 }
 
 /*main styles*/
-/* main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-} */
 .main-text {
   display: inline-block;
   margin: 35vh auto 0;
@@ -225,6 +219,9 @@ button {
   background: none;
   border: none;
   padding: 0;
+}
+svg {
+  pointer-events: none;
 }
 .item-icon svg rect {
   opacity: 0.1;
