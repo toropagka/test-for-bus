@@ -287,7 +287,11 @@ svg {
 }
 
 /* вариант с непустым списком */
-
+#main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
 .main-container {
   width: 1160px;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
