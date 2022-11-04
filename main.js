@@ -1,4 +1,26 @@
 'use strict';
+
+let openContactModal = document.querySelector('#openContactModal');
+let openGroupModal = document.querySelector('#openGroupModal');
+
+let openGroupButton = document.getElementById('groupButton');
+let closeGroupModal = document.getElementById('closeGroup');
+
+let openContactButton = document.getElementById('contactButton');
+let closeContactModal = document.getElementById('closeContact');
+
+let openAddGroupButton = document.getElementById('addGroup');
+
+let mainDropdownContainer = document.querySelector('.main-container');
+let mainDropdownButton = document.querySelector('.main-dropdown_button');
+let mainOptionsContainer = document.querySelector('.main-option-container');
+
+let groupList = document.getElementById('groupList');
+
+let groupInput = document.querySelector('#addGroupInput');
+let dropdownGroup = document.getElementById('dropdownGroup');
+
+let saveGroup = document.getElementById('saveGroup');
 // unique id
 // переписать на класс
 let guidFactory = (function () {
@@ -20,43 +42,6 @@ let guidFactory = (function () {
   };
 })();
 
-let openGroupButton = document.getElementById('groupButton');
-openGroupButton.addEventListener('click', () => {
-  document.querySelector('#openGroupModal').classList.add('open');
-});
-
-let closeGroupModal = document.getElementById('closeGroup');
-closeGroupModal.addEventListener('click', () => {
-  document.querySelector('#openGroupModal').classList.remove('open');
-});
-
-let openContactButton = document.getElementById('contactButton');
-openContactButton.addEventListener('click', () => {
-  document.querySelector('#openContactModal').classList.add('open');
-});
-
-let closeContactModal = document.getElementById('closeContact');
-closeContactModal.addEventListener('click', () => {
-  document.querySelector('#openContactModal').classList.remove('open');
-});
-
-let openAddGroupButton = document.getElementById('addGroup');
-openAddGroupButton.addEventListener('click', () => {
-  document.querySelector('#inputWrapper').classList.remove('hidden');
-});
-
-/* вариант с непустым списком */
-
-let selectContainer = document.querySelector('.main-container');
-let select = document.querySelector('.main-dropdown_button');
-let optionsContainer = document.querySelector('.main-option-container');
-
-select.onclick = () => {
-  selectContainer.classList.toggle('active');
-  optionsContainer.classList.toggle('hidden');
-};
-
-let groupList = document.getElementById('groupList');
 let groupsArray = [
   {
     id: guidFactory.create(1),
@@ -67,6 +52,50 @@ let groupsArray = [
     groupName: 'family',
   },
 ];
+localStorage.setItem('groupsArray', JSON.stringify(groupsArray));
+
+let groupsArrayFromLS = localStorage.getItem('groupsArray');
+groupsArrayFromLS = JSON.parse(groupsArrayFromLS);
+
+function realGroupsArray() {
+  if (groupsArray.length > groupsArrayFromLS.length) {
+    let newRequest = localStorage.getItem('groupsArray');
+    newRequest = JSON.parse(newRequest);
+    return newRequest;
+  }
+  return groupsArrayFromLS;
+}
+
+openGroupButton.addEventListener('click', () => {
+  openGroupModal.classList.add('open');
+});
+openContactModal.addEventListener('click', (e) => {
+  if (e.target === openContactModal || e.target === closeContactModal) {
+    openContactModal.classList.remove('open');
+  }
+});
+
+openGroupModal.addEventListener('click', (e) => {
+  if (e.target === openGroupModal || e.target === closeGroupModal) {
+    openGroupModal.classList.remove('open');
+  }
+});
+
+openContactButton.addEventListener('click', () => {
+  openContactModal.classList.add('open');
+});
+
+openAddGroupButton.addEventListener('click', () => {
+  document.querySelector('#inputWrapper').classList.remove('hidden');
+});
+
+/* вариант с непустым списком */
+
+mainDropdownButton.onclick = () => {
+  mainDropdownContainer.classList.toggle('active');
+  mainOptionsContainer.classList.toggle('hidden');
+};
+
 function renderGroupList() {
   return (groupList.innerHTML = groupsArray
     .map(
@@ -93,13 +122,14 @@ function renderGroupList() {
 renderGroupList();
 
 // добавление группы в массив
-let groupInput = document.querySelector('#addGroupInput');
 groupInput.addEventListener('keydown', (e) => {
   if (e.keyCode === 13 && groupInput.value.length) {
     groupsArray.push({
       id: guidFactory.create(1),
       groupName: groupInput.value,
     });
+    localStorage.setItem('groupsArray', JSON.stringify(groupsArray));
+
     renderGroupList();
     groupInput.value = '';
   }
@@ -113,4 +143,21 @@ groupList.addEventListener('click', (e) => {
     });
   }
   renderGroupList();
+});
+
+// список опций на основе массива групп
+function groupOtionsRendering() {
+  for (let i = 0; i < realGroupsArray().length; i++) {
+    let option = realGroupsArray()[i];
+    let element = document.createElement('option');
+    element.textContent = option.groupName;
+    element.value = option.groupName;
+    dropdownGroup.appendChild(element);
+  }
+}
+groupOtionsRendering();
+
+saveGroup.addEventListener('click', () => {
+  realGroupsArray();
+  groupOtionsRendering();
 });
