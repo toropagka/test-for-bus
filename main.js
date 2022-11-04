@@ -42,6 +42,7 @@ let guidFactory = (function () {
   };
 })();
 
+// создание массива групп, добавление в ЛС и извлечение
 let groupsArray = [
   {
     id: guidFactory.create(1),
@@ -66,6 +67,7 @@ function realGroupsArray() {
   return groupsArrayFromLS;
 }
 
+// открытие модалок контактов и групп
 openGroupButton.addEventListener('click', () => {
   openGroupModal.classList.add('open');
 });
