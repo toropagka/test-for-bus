@@ -18,6 +18,7 @@ let groupInput = document.querySelector('#addGroupInput');
 let dropdownGroup = document.getElementById('dropdownGroup');
 
 let saveGroup = document.getElementById('saveGroup');
+let saveContact = document.getElementById('saveContact');
 // unique id
 // переписать на класс
 let guidFactory = (function () {
@@ -44,24 +45,46 @@ let groupsArray = [
   {
     id: guidFactory.create(1),
     groupName: 'friends',
+    groupContacts: [
+      {
+        contactName: 'Test Test Test',
+        contactPhone: '+7 (777) 777-77-77',
+      },
+      {
+        contactName: 'Test2 Test2 Test2',
+        contactPhone: '+7 (777) 777-77-77',
+      },
+    ],
   },
   {
     id: guidFactory.create(1),
     groupName: 'family',
+    groupContacts: [
+      {
+        contactName: 'Test Test Test',
+        contactPhone: '+7 (777) 777-77-77',
+      },
+    ],
   },
 ];
 localStorage.setItem('groupsArray', JSON.stringify(groupsArray));
 
-let groupsArrayFromLS = localStorage.getItem('groupsArray');
-groupsArrayFromLS = JSON.parse(groupsArrayFromLS);
+// let groupsArrayFromLS = localStorage.getItem('groupsArray');
+// groupsArrayFromLS = JSON.parse(groupsArrayFromLS);
 
+// проверка на изменение массива контактов
+// function contactsArrayChanges() {
+//   for (let i of groupsArray) {
+//     for (let el of groupsArrayFromLS) {
+//       let result = el.groupContacts.length === i.groupContacts.length;
+//       return result;
+//     }
+//   }
+// }
 function realGroupsArray() {
-  if (groupsArray.length !== groupsArrayFromLS.length) {
-    let newRequest = localStorage.getItem('groupsArray');
-    newRequest = JSON.parse(newRequest);
-    return newRequest;
-  }
-  return groupsArrayFromLS;
+  let newRequest = localStorage.getItem('groupsArray');
+  newRequest = JSON.parse(newRequest);
+  return newRequest;
 }
 
 // открытие и закрытие модалок контактов и групп
@@ -121,9 +144,7 @@ function renderMainGroupList() {
   if (realGroupsArray().length > 0) {
     return (mainGroupList.innerHTML = realGroupsArray()
       .map(
-        (el) => `<div class="main-container">
-      <!-- <span class="main-text"> Cписок контактов пуст</span> -->
-      <!-- вариант с непустым списком -->
+        (el) => `<div class="main-container active">
       <button class="main-dropdown_button">
       ${el.groupName}
         <svg class="chevron-icon" width="13" height="8" viewBox="0 0 13 8" xmlns="http://www.w3.org/2000/svg">
@@ -132,42 +153,45 @@ function renderMainGroupList() {
         </svg>
 
       </button>
-      <ul class="main-option-container">
-        <li class="option">
-          <span class="main-container--name">Фамилия Имя Отчество</span>
-          <div class="main-container--buttons">
-            <span class="main-container--number">+7 (ХХХ) ХХХ - ХХ - ХХ</span>
-            <button type="button" class="item-icon item-icon--blue">
-              <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect opacity="0.1" x="0.5" y="0.5" width="37" height="37" rx="5.5" stroke="black" />
-                <g clip-path="url(#clip0_1894_95)">
-                  <path
-                    d="M10 24.2501V28.0001H13.75L24.81 16.9401L21.06 13.1901L10 24.2501ZM27.71 14.0401C28.1 13.6501 28.1 13.0201 27.71 12.6301L25.37 10.2901C24.98 9.90006 24.35 9.90006 23.96 10.2901L22.13 12.1201L25.88 15.8701L27.71 14.0401Z"
-                    fill="black" />
-                </g>
-                <defs>
-                  <clipPath id="clip0_1894_95">
-                    <rect width="24" height="24" fill="white" transform="translate(7 7)" />
-                  </clipPath>
-                </defs>
-              </svg>
-            </button>
-            <button type="button" class="item-icon"><svg width="38" height="38" viewBox="0 0 38 38" fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <rect x="0.5" y="0.5" width="37" height="37" rx="5.5" />
-                <g clip-path="url(#clip0_1894_238)">
-                  <path
-                    d="M12.6666 26.3889C12.6666 27.55 13.6166 28.5 14.7778 28.5H23.2222C24.3833 28.5 25.3333 27.55 25.3333 26.3889V13.7222H12.6666V26.3889ZM15.2633 18.8733L16.7516 17.385L19 19.6228L21.2378 17.385L22.7261 18.8733L20.4883 21.1111L22.7261 23.3489L21.2378 24.8372L19 22.5994L16.7622 24.8372L15.2739 23.3489L17.5116 21.1111L15.2633 18.8733ZM22.6944 10.5556L21.6389 9.5H16.3611L15.3055 10.5556H11.6111V12.6667H26.3889V10.5556H22.6944Z" />
-                </g>
-                <defs>
-                  <clipPath id="clip0_1894_238">
-                    <rect width="25.3333" height="25.3333" fill="white" transform="translate(6.33325 6.33331)" />
-                  </clipPath>
-                </defs>
-              </svg>
-            </button>
-          </div>
-        </li>
+      <ul class="main-option-container hidden">
+      ${el.groupContacts?.map(
+        (el) => `<li class="option">
+      <span class="main-container--name">${el.contactName}</span>
+      <div class="main-container--buttons">
+        <span class="main-container--number">${el.contactPhone}</span>
+        <button type="button" class="item-icon item-icon--blue">
+          <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect opacity="0.1" x="0.5" y="0.5" width="37" height="37" rx="5.5" stroke="black" />
+            <g clip-path="url(#clip0_1894_95)">
+              <path
+                d="M10 24.2501V28.0001H13.75L24.81 16.9401L21.06 13.1901L10 24.2501ZM27.71 14.0401C28.1 13.6501 28.1 13.0201 27.71 12.6301L25.37 10.2901C24.98 9.90006 24.35 9.90006 23.96 10.2901L22.13 12.1201L25.88 15.8701L27.71 14.0401Z"
+                fill="black" />
+            </g>
+            <defs>
+              <clipPath id="clip0_1894_95">
+                <rect width="24" height="24" fill="white" transform="translate(7 7)" />
+              </clipPath>
+            </defs>
+          </svg>
+        </button>
+        <button type="button" class="item-icon"><svg width="38" height="38" viewBox="0 0 38 38" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <rect x="0.5" y="0.5" width="37" height="37" rx="5.5" />
+            <g clip-path="url(#clip0_1894_238)">
+              <path
+                d="M12.6666 26.3889C12.6666 27.55 13.6166 28.5 14.7778 28.5H23.2222C24.3833 28.5 25.3333 27.55 25.3333 26.3889V13.7222H12.6666V26.3889ZM15.2633 18.8733L16.7516 17.385L19 19.6228L21.2378 17.385L22.7261 18.8733L20.4883 21.1111L22.7261 23.3489L21.2378 24.8372L19 22.5994L16.7622 24.8372L15.2739 23.3489L17.5116 21.1111L15.2633 18.8733ZM22.6944 10.5556L21.6389 9.5H16.3611L15.3055 10.5556H11.6111V12.6667H26.3889V10.5556H22.6944Z" />
+            </g>
+            <defs>
+              <clipPath id="clip0_1894_238">
+                <rect width="25.3333" height="25.3333" fill="white" transform="translate(6.33325 6.33331)" />
+              </clipPath>
+            </defs>
+          </svg>
+        </button>
+      </div>
+    </li>`
+      )}
+        
       </ul>
     </div>`
       )
@@ -183,9 +207,8 @@ function addDropdown() {
   let mainDropdownContainers = document.querySelectorAll('.main-container');
 
   for (let item of mainDropdownContainers) {
-    console.log(item);
     item.firstElementChild.onclick = () => {
-      item.firstElementChild.classList.toggle('active');
+      item.classList.toggle('active');
       item.lastElementChild.classList.toggle('hidden');
     };
   }
@@ -197,6 +220,7 @@ groupInput.addEventListener('keydown', (e) => {
     groupsArray.push({
       id: guidFactory.create(1),
       groupName: groupInput.value,
+      groupContacts: [],
     });
     localStorage.setItem('groupsArray', JSON.stringify(groupsArray));
 
@@ -227,7 +251,7 @@ function groupOtionsRendering() {
   }
 }
 groupOtionsRendering();
-
+// сохранение группы
 saveGroup.addEventListener('click', () => {
   dropdownGroup.innerHTML = `<option disabled selected>Выберите группу</option>
   `;
@@ -236,4 +260,80 @@ saveGroup.addEventListener('click', () => {
   openGroupModal.classList.remove('open');
   renderMainGroupList();
   addDropdown();
+});
+
+// добавление контакта
+function addContact() {
+  let contactInfo = {};
+  contactInfo.contactName = document.getElementById('contactName').value;
+  contactInfo.contactPhone = document.getElementById('contactPhone').value;
+  let selectedGroup = dropdownGroup.value;
+  for (let el of groupsArray) {
+    el.groupName === selectedGroup ? el.groupContacts.push(contactInfo) : null;
+  }
+  localStorage.setItem('groupsArray', JSON.stringify(groupsArray));
+}
+// сохранение контакта
+saveContact.addEventListener('click', () => {
+  addContact();
+  openContactModal.classList.remove('open');
+  renderMainGroupList();
+  addDropdown();
+});
+
+// маска телефона
+const contactPhone = document.querySelector('#contactPhone');
+
+const prefixNumber = (str) => {
+  if (str === '7') {
+    return '7 (';
+  }
+  if (str === '8') {
+    return '8 (';
+  }
+  if (str === '9') {
+    return '7 (9';
+  }
+  return '7 (';
+};
+
+// ======================================
+contactPhone.addEventListener('input', () => {
+  const value = contactPhone.value.replace(/\D+/g, '');
+  const numberLength = 11;
+
+  let result;
+  if (contactPhone.value.includes('+8') || contactPhone.value[0] === '8') {
+    result = '';
+  } else {
+    result = '+';
+  }
+
+  //
+  for (let i = 0; i < value.length && i < numberLength; i++) {
+    switch (i) {
+      case 0:
+        result += prefixNumber(value[i]);
+        continue;
+      case 4:
+        result += ') ';
+        break;
+      case 7:
+        result += '-';
+        break;
+      case 9:
+        result += '-';
+        break;
+      default:
+        break;
+    }
+    result += value[i];
+  }
+  //
+  contactPhone.value = result;
+});
+
+// маска на ввод ФИО
+document.getElementById('contactName').addEventListener('input', function () {
+  this.value = this.value.replace(/[^a-zа-яё\s]/gi, '');
 });
