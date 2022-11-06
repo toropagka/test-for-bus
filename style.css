@@ -1,6 +1,5 @@
 html {
   max-width: 1920px;
-  font-family: 'Arial';
   font-style: normal;
 }
 
@@ -89,25 +88,24 @@ button {
   opacity: 0.3;
 }
 
-.modal {
-  position: fixed; /* фиксированное положение */
+/* .modal {
+  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  background: rgba(0, 0, 0, 0.5); /* цвет фона */
+  background: rgba(0, 0, 0, 0.5);
   z-index: 10;
   margin: 0;
   padding: 0;
-  display: none;
-}
-/* при отображении модального окно */
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.2s, opacity 0.2s linear;
+} */
 
-/* свойства для блока, содержащего контент модального окна */
-.modal-content {
-  margin: 0px;
+.modal {
   max-width: 312px;
-  position: relative;
+  /* position: relative;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -118,19 +116,27 @@ button {
   -ms-flex-direction: column;
   flex-direction: column;
   background-color: #fff;
-  -webkit-background-clip: padding-box;
+  -webkit-background-clip: padding-box; */
   background-clip: padding-box;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 0.3rem;
   outline: 0;
   height: 100vh;
-  -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  /* -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); */
+  /* visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.2s, opacity 0.2s linear; */
 }
-
-/* свойства для заголовка модального окна */
-.modal-header {
-  display: -webkit-box;
+/* .modal.open .modal-content {
+  visibility: visible;
+  opacity: 1;
+} */
+.modal_header {
+  height: 70px;
+}
+/* .modal_title {
+  /* display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
@@ -141,38 +147,35 @@ button {
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
-  justify-content: space-between;
-  padding: 0 24px;
+  justify-content: space-between; */
+/* padding: 0 24px;
   height: 70px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-.modal-title {
+} */
+.modal_title {
   margin-top: 0;
   margin-bottom: 0;
   font-weight: 700;
   font-size: 18px;
   line-height: 120%;
 }
-/* свойства для кнопки "Закрыть" */
-.close {
+/* .close {
   height: 24px;
   background: #fff;
   opacity: 0.3;
   fill: #fff;
+  cursor: pointer;
 }
-/* свойства для кнопки "Закрыть" при нахождении её в фокусе или наведении */
 .close:focus svg rect,
 .close:hover svg rect {
   fill: rgba(0, 0, 0, 0.5);
   border-radius: 6px;
-  cursor: pointer;
 }
 .close:focus svg path,
 .close:hover svg path {
   color: rgba(0, 0, 0, 0.3);
-}
-/* свойства для блока, содержащего основное содержимое окна */
-.modal-body {
+} */
+/* .modal_body {
   position: relative;
   -webkit-box-flex: 1;
   -webkit-flex: 1 1 auto;
@@ -180,7 +183,7 @@ button {
   flex: 1 1 auto;
   padding: 15px;
   overflow: auto;
-}
+} */
 
 .group-list {
   list-style-type: none;
@@ -244,6 +247,7 @@ svg {
   padding: 0 0 0 12px;
   border: none;
 }
+
 .group-button {
   margin-bottom: 24px;
   margin-right: 24px;
@@ -335,6 +339,7 @@ svg {
   list-style-type: none;
   padding: 0;
   gap: 24px;
+  overflow: hidden;
 }
 .option {
   height: 70px;
@@ -344,6 +349,7 @@ svg {
   gap: 24px;
   text-align: center;
 }
+
 .option:not(:last-child) {
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }
@@ -362,7 +368,8 @@ svg {
   gap: 8px;
 }
 .open {
-  display: block;
+  visibility: visible;
+  opacity: 1;
 }
 .hidden {
   display: none;

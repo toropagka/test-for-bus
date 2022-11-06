@@ -5,6 +5,9 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
   <link rel="stylesheet" href="./normalize.css" type="text/css">
   <link rel="stylesheet" href="./style.css" type="text/css">
   <title>TODO</title>
@@ -24,7 +27,8 @@
         <span class="header-contacts--text">Книга контактов</span>
       </div>
       <div class="header-button">
-        <button type="button" class="header-button--red" id="contactButton"><span> Добавить контакт</span><span><svg
+        <button type="button" class="header-button--red" id="contactButton" data-bs-toggle="offcanvas"
+          data-bs-target="#openContactButton" aria-controls="openContactButton"><span> Добавить контакт</span><span><svg
               width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g clip-path="url(#clip0_4060_65)">
                 <path d="M14.25 9.75H9.75V14.25H8.25V9.75H3.75V8.25H8.25V3.75H9.75V8.25H14.25V9.75Z" fill="white" />
@@ -36,7 +40,8 @@
               </defs>
             </svg>
           </span> </button>
-        <button type="button" class="header-button--blue" id="groupButton">Группы</button>
+        <button type="button" class="header-button--blue" id="groupButton" data-bs-toggle="offcanvas"
+          data-bs-target="#openGroupModal" aria-controls="openContactButton">Группы</button>
       </div>
     </div>
   </header>
@@ -45,63 +50,33 @@
 
   </main>
 
-  <!-- модалка с группами контактов -->
-  <div id="openGroupModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title">Группы контактов</h3>
-        <div title="Close" class="close" id="closeGroup"><svg width="24" height="24" viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg">
-            <g clip-path="url(#clip0_1894_185)">
-              <rect width="24" height="24" rx="6" />
-              <path
-                d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z"
-                fill="black" />
-            </g>
-            <defs>
-              <clipPath id="clip0_1894_185">
-                <rect width="24" height="24" rx="6" />
-              </clipPath>
-            </defs>
-          </svg>
-        </div>
-      </div>
-      <div class="modal-body">
-        <ul class="group-list" id="groupList">
-
-        </ul>
-        <div class="group-list--item hidden" id="inputWrapper">
-          <input type="text" id="addGroupInput" class="item-name item-name--input" placeholder="Введите название" />
-          <button type="button" id="deleteGroupInput" class="item-icon"><svg width="38" height="38" viewBox="0 0 38 38"
-              fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="0.5" y="0.5" width="37" height="37" rx="5.5" />
-              <g clip-path="url(#clip0_1894_238)">
-                <path
-                  d="M12.6666 26.3889C12.6666 27.55 13.6166 28.5 14.7778 28.5H23.2222C24.3833 28.5 25.3333 27.55 25.3333 26.3889V13.7222H12.6666V26.3889ZM15.2633 18.8733L16.7516 17.385L19 19.6228L21.2378 17.385L22.7261 18.8733L20.4883 21.1111L22.7261 23.3489L21.2378 24.8372L19 22.5994L16.7622 24.8372L15.2739 23.3489L17.5116 21.1111L15.2633 18.8733ZM22.6944 10.5556L21.6389 9.5H16.3611L15.3055 10.5556H11.6111V12.6667H26.3889V10.5556H22.6944Z" />
-              </g>
-              <defs>
-                <clipPath id="clip0_1894_238">
-                  <rect width="25.3333" height="25.3333" fill="white" transform="translate(6.33325 6.33331)" />
-                </clipPath>
-              </defs>
-            </svg>
-          </button>
-        </div>
-      </div>
+  <!--модалка с добавлеием контактов-->
+  <div class="modal offcanvas offcanvas-start" tabindex="-1" id="openContactButton" aria-labelledby="openContactButton">
+    <div class="modal_header offcanvas-header">
+      <h3 class="modal_title">Добавление контакта</h3>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column justify-content-between">
+      <form class="group-list form">
+        <input type="text" id="contactName" class=" group-list--item item-name item-name--input form-item"
+          placeholder="Введите ФИО" maxlength="50">
+        <input type="text" id="contactPhone" class="form-item group-list--item item-name item-name--input"
+          placeholder="Введите номер">
+        <select id="dropdownGroup" class="form-item group-list--item item-name item-name--input">
+          <option disabled selected>Выберите группу</option>
+        </select>
+      </form>
       <div class="group-button">
-        <button type="button" class="group-button--add" id="addGroup">Добавить</button>
-        <button type="button" class="group-button--save" id="saveGroup">Сохранить</button>
+        <button type="submit" class="group-button--save" id="saveContact">Сохранить</button>
       </div>
     </div>
   </div>
-
-  <!--модалка с добавлеием контактов-->
-  <div id="openContactModal" class="modal">
+  <!-- <div id="openContactModal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
         <h3 class="modal-title">Добавление контакта</h3>
-        <div title="Close" class="close" id="closeContact"><svg width="24" height="24" viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg">
+        <div title="Close" class="close" id="closeContact">
+          <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <g clip-path="url(#clip0_1894_185)">
               <rect width="24" height="24" rx="6" />
               <path
@@ -131,7 +106,96 @@
         <button type="submit" class="group-button--save" id="saveContact">Сохранить</button>
       </div>
     </div>
+  </div> -->
+
+  <!-- модалка с группами контактов -->
+  <div class="modal offcanvas offcanvas-start" tabindex="-1" id="openGroupModal"
+    aria-labelledby="offcanvasExampleLabel">
+    <div class="modal_header offcanvas-header">
+      <h3 class="modal_title">Группы контактов</h3>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body d-flex flex-column justify-content-between">
+      <div class="d-flex flex-column">
+        <ul class="group-list" id="groupList">
+
+        </ul>
+        <div class="group-list--item hidden" id="inputWrapper">
+          <input type="text" id="addGroupInput" class="item-name item-name--input" placeholder="Введите название" />
+          <button type="button" id="deleteGroupInput" class="item-icon"><svg width="38" height="38" viewBox="0 0 38 38"
+              xmlns="http://www.w3.org/2000/svg">
+              <rect x="0.5" y="0.5" width="37" height="37" rx="5.5" />
+              <g clip-path="url(#clip0_1894_238)">
+                <path
+                  d="M12.6666 26.3889C12.6666 27.55 13.6166 28.5 14.7778 28.5H23.2222C24.3833 28.5 25.3333 27.55 25.3333 26.3889V13.7222H12.6666V26.3889ZM15.2633 18.8733L16.7516 17.385L19 19.6228L21.2378 17.385L22.7261 18.8733L20.4883 21.1111L22.7261 23.3489L21.2378 24.8372L19 22.5994L16.7622 24.8372L15.2739 23.3489L17.5116 21.1111L15.2633 18.8733ZM22.6944 10.5556L21.6389 9.5H16.3611L15.3055 10.5556H11.6111V12.6667H26.3889V10.5556H22.6944Z" />
+              </g>
+              <defs>
+                <clipPath id="clip0_1894_238">
+                  <rect width="25.3333" height="25.3333" fill="white" transform="translate(6.33325 6.33331)" />
+                </clipPath>
+              </defs>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="group-button">
+        <button type="button" class="group-button--add" id="addGroup">Добавить</button>
+        <button type="button" class="group-button--save" id="saveGroup">Сохранить</button>
+      </div>
+    </div>
   </div>
+  <!-- <div id="openGroupModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Группы контактов</h3>
+        <div title="Close" class="close" id="closeGroup">
+          <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_1894_185)">
+              <rect width="24" height="24" rx="6" />
+              <path
+                d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12L19 6.41Z"
+                fill="black" />
+            </g>
+            <defs>
+              <clipPath id="clip0_1894_185">
+                <rect width="24" height="24" rx="6" />
+              </clipPath>
+            </defs>
+          </svg>
+        </div>
+      </div>
+      <div class="modal-body">
+        <ul class="group-list" id="groupList">
+
+        </ul>
+        <div class="group-list--item hidden" id="inputWrapper">
+          <input type="text" id="addGroupInput" class="item-name item-name--input" placeholder="Введите название" />
+          <button type="button" id="deleteGroupInput" class="item-icon"><svg width="38" height="38" viewBox="0 0 38 38"
+              xmlns="http://www.w3.org/2000/svg">
+              <rect x="0.5" y="0.5" width="37" height="37" rx="5.5" />
+              <g clip-path="url(#clip0_1894_238)">
+                <path
+                  d="M12.6666 26.3889C12.6666 27.55 13.6166 28.5 14.7778 28.5H23.2222C24.3833 28.5 25.3333 27.55 25.3333 26.3889V13.7222H12.6666V26.3889ZM15.2633 18.8733L16.7516 17.385L19 19.6228L21.2378 17.385L22.7261 18.8733L20.4883 21.1111L22.7261 23.3489L21.2378 24.8372L19 22.5994L16.7622 24.8372L15.2739 23.3489L17.5116 21.1111L15.2633 18.8733ZM22.6944 10.5556L21.6389 9.5H16.3611L15.3055 10.5556H11.6111V12.6667H26.3889V10.5556H22.6944Z" />
+              </g>
+              <defs>
+                <clipPath id="clip0_1894_238">
+                  <rect width="25.3333" height="25.3333" fill="white" transform="translate(6.33325 6.33331)" />
+                </clipPath>
+              </defs>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="group-button">
+        <button type="button" class="group-button--add" id="addGroup">Добавить</button>
+        <button type="button" class="group-button--save" id="saveGroup">Сохранить</button>
+      </div>
+    </div>
+  </div> -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+    crossorigin="anonymous"></script>
+
   <script src="./main.js"></script>
 </body>
 
