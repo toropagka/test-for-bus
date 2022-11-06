@@ -106,7 +106,7 @@ button {
 /* свойства для блока, содержащего контент модального окна */
 .modal-content {
   margin: 0px;
-  width: 312px;
+  max-width: 312px;
   position: relative;
   display: -webkit-box;
   display: -webkit-flex;
@@ -281,7 +281,8 @@ svg {
 }
 
 .form-item {
-  width: 264px;
+  max-width: 264px;
+  width: 100%;
   color: rgba(0, 0, 0, 0.5);
   cursor: pointer;
 }
@@ -293,10 +294,12 @@ svg {
   gap: 24px;
 }
 .main-container {
-  width: 1160px;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+  max-width: 1160px;
+  width: 100%;
+  box-shadow: 0px 4px 20px rgb(0 0 0 / 20%);
   border-radius: 6px;
   padding: 0 24px;
+  box-sizing: border-box;
 }
 .main-dropdown_button {
   position: relative;
@@ -307,17 +310,20 @@ svg {
   background: #fff;
   font-size: 18px;
   line-height: 22px;
+  color: #000000;
+}
+.main-container.active .main-dropdown_button {
   color: #005bfe;
 }
 .main-container .chevron-icon {
   position: absolute;
   left: calc(100% - 10px);
   top: 50%;
-  transform: translate(-100%, -50%);
+  transform: translate(-100%, -50%) rotate(180deg);
   transition: all 0.5s ease;
 }
 .main-container.active .chevron-icon {
-  transform: translate(-100%, -50%) rotate(180deg);
+  transform: translate(-100%, -50%);
 }
 .item-icon--blue:hover svg {
   background: #005bfe;
@@ -328,23 +334,26 @@ svg {
   flex-direction: column;
   list-style-type: none;
   padding: 0;
+  gap: 24px;
 }
 .option {
   height: 70px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 24px;
+  text-align: center;
 }
 .option:not(:last-child) {
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
-  /* border-top: 1px solid rgba(0, 0, 0, 0.3); */
 }
+
 .main-container--name {
   color: rgba(0, 0, 0, 0.5);
 }
 .main-container--number {
-  text-align: left;
-  margin-right: 16px;
+  margin-left: auto;
+  font-size: 18px;
 }
 .main-container--buttons {
   box-sizing: border-box;
@@ -357,4 +366,28 @@ svg {
 }
 .hidden {
   display: none;
+}
+
+@media screen and (max-width: 400px) {
+  .header {
+    height: 140px;
+    padding-top: 20px;
+  }
+  .header-button {
+    flex-direction: column;
+  }
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .option {
+    flex-direction: column;
+    height: 100px;
+    gap: 12px;
+    justify-content: center;
+    padding-bottom: 8px;
+  }
+  .main-container--number {
+    margin: auto;
+  }
 }

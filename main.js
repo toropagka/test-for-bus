@@ -10,6 +10,7 @@ let openContactButton = document.getElementById('contactButton');
 let closeContactModal = document.getElementById('closeContact');
 
 let openAddGroupButton = document.getElementById('addGroup');
+let deleteGroupInput = document.getElementById('deleteGroupInput');
 
 let groupList = document.getElementById('groupList');
 let mainGroupList = document.getElementById('main');
@@ -19,6 +20,7 @@ let dropdownGroup = document.getElementById('dropdownGroup');
 
 let saveGroup = document.getElementById('saveGroup');
 let saveContact = document.getElementById('saveContact');
+
 // unique id
 // переписать на класс
 let guidFactory = (function () {
@@ -47,10 +49,12 @@ let groupsArray = [
     groupName: 'friends',
     groupContacts: [
       {
+        id: guidFactory.create(2),
         contactName: 'Test Test Test',
         contactPhone: '+7 (777) 777-77-77',
       },
       {
+        id: guidFactory.create(2),
         contactName: 'Test2 Test2 Test2',
         contactPhone: '+7 (777) 777-77-77',
       },
@@ -61,6 +65,7 @@ let groupsArray = [
     groupName: 'family',
     groupContacts: [
       {
+        id: guidFactory.create(2),
         contactName: 'Test Test Test',
         contactPhone: '+7 (777) 777-77-77',
       },
@@ -68,19 +73,7 @@ let groupsArray = [
   },
 ];
 localStorage.setItem('groupsArray', JSON.stringify(groupsArray));
-
-// let groupsArrayFromLS = localStorage.getItem('groupsArray');
-// groupsArrayFromLS = JSON.parse(groupsArrayFromLS);
-
-// проверка на изменение массива контактов
-// function contactsArrayChanges() {
-//   for (let i of groupsArray) {
-//     for (let el of groupsArrayFromLS) {
-//       let result = el.groupContacts.length === i.groupContacts.length;
-//       return result;
-//     }
-//   }
-// }
+// получаем актуальный массив из ЛС
 function realGroupsArray() {
   let newRequest = localStorage.getItem('groupsArray');
   newRequest = JSON.parse(newRequest);
@@ -112,8 +105,13 @@ openAddGroupButton.addEventListener('click', () => {
   document.querySelector('#inputWrapper').classList.remove('hidden');
 });
 
-/* вариант с непустым списком */
+// удаление инпута
+deleteGroupInput.addEventListener('click', function () {
+  document.querySelector('#inputWrapper').classList.add('hidden');
+  groupInput.value = '';
+});
 
+// отрисовка списка групп в модалке
 function renderGroupList() {
   return (groupList.innerHTML = groupsArray
     .map(
@@ -139,6 +137,7 @@ function renderGroupList() {
 }
 renderGroupList();
 
+// отрисовка групп на главном экране
 function renderMainGroupList() {
   realGroupsArray();
   if (realGroupsArray().length > 0) {
@@ -153,13 +152,15 @@ function renderMainGroupList() {
         </svg>
 
       </button>
-      <ul class="main-option-container hidden">
-      ${el.groupContacts?.map(
-        (el) => `<li class="option">
+      <ul class="main-option-container">
+      ${el.groupContacts
+        ?.map(
+          (el) => `<li class="option">
       <span class="main-container--name">${el.contactName}</span>
+      <span class="main-container--number">${el.contactPhone}</span>
       <div class="main-container--buttons">
-        <span class="main-container--number">${el.contactPhone}</span>
-        <button type="button" class="item-icon item-icon--blue">
+        
+        <button type="button" id="${el.id}" data-edit="true" class="item-icon item-icon--blue">
           <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect opacity="0.1" x="0.5" y="0.5" width="37" height="37" rx="5.5" stroke="black" />
             <g clip-path="url(#clip0_1894_95)">
@@ -174,7 +175,8 @@ function renderMainGroupList() {
             </defs>
           </svg>
         </button>
-        <button type="button" class="item-icon"><svg width="38" height="38" viewBox="0 0 38 38" fill="none"
+
+        <button type="button" id="${el.id}" data-delete="true" class="item-icon"><svg width="38" height="38" viewBox="0 0 38 38" fill="none"
             xmlns="http://www.w3.org/2000/svg">
             <rect x="0.5" y="0.5" width="37" height="37" rx="5.5" />
             <g clip-path="url(#clip0_1894_238)">
@@ -190,7 +192,8 @@ function renderMainGroupList() {
         </button>
       </div>
     </li>`
-      )}
+        )
+        .join('')}
         
       </ul>
     </div>`
@@ -265,6 +268,7 @@ saveGroup.addEventListener('click', () => {
 // добавление контакта
 function addContact() {
   let contactInfo = {};
+  contactInfo.id = guidFactory.create(2);
   contactInfo.contactName = document.getElementById('contactName').value;
   contactInfo.contactPhone = document.getElementById('contactPhone').value;
   let selectedGroup = dropdownGroup.value;
@@ -278,6 +282,8 @@ saveContact.addEventListener('click', () => {
   addContact();
   openContactModal.classList.remove('open');
   renderMainGroupList();
+  editContact();
+
   addDropdown();
 });
 
@@ -337,3 +343,36 @@ contactPhone.addEventListener('input', () => {
 document.getElementById('contactName').addEventListener('input', function () {
   this.value = this.value.replace(/[^a-zа-яё\s]/gi, '');
 });
+
+// редактирование и удаление контакта с главной страницы
+function editContact() {
+  let mainOptionContainer = document.querySelectorAll('.main-option-container');
+  groupsArray.forEach(function (item, index) {
+    mainOptionContainer[index].addEventListener('click', (e) => {
+      if (e.target.dataset.delete) {
+        item.groupContacts.forEach(function (el, i) {
+          if (el.id == e.target.id) {
+            item.groupContacts.splice(i, 1);
+          }
+        });
+        localStorage.setItem('groupsArray', JSON.stringify(groupsArray));
+        renderMainGroupList();
+        addDropdown();
+        editContact();
+      }
+
+      if (e.target.dataset.edit) {
+        item.groupContacts.forEach(function (el, i) {
+          if (el.id == e.target.id) {
+            openContactModal.classList.add('open');
+            document.getElementById('contactName').value = el.contactName;
+            document.getElementById('contactPhone').value = el.contactPhone;
+            item.groupContacts.splice(i, 1);
+            dropdownGroup.value = item.groupName;
+          }
+        });
+      }
+    });
+  });
+}
+editContact();
