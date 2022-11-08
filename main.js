@@ -1,8 +1,6 @@
 'use strict';
 
-let openContactButton = document.querySelector('#openContactButton');
 let openGroupModal = document.querySelector('#openGroupModal');
-
 let closeGroupModal = document.getElementById('closeGroup');
 
 let contactButton = document.getElementById('contactButton');
@@ -20,7 +18,7 @@ let dropdownGroup = document.getElementById('dropdownGroup');
 let saveGroup = document.getElementById('saveGroup');
 let saveContact = document.getElementById('saveContact');
 
-let mainOptionContainer = document.querySelectorAll('.main-option-container');
+const contactPhone = document.querySelector('#contactPhone');
 
 // unique id
 let guidFactory = (function () {
@@ -225,7 +223,7 @@ saveGroup.addEventListener('click', () => {
   `;
   realGroupsArray();
   groupOtionsRendering();
-  openGroupModal.classList.remove('open');
+  // openGroupModal.classList.remove('open');
   renderMainGroupList();
   editContact();
   addDropdown();
@@ -245,19 +243,49 @@ function addContact() {
 }
 // сохранение контакта
 saveContact.addEventListener('click', () => {
-  closeContactModal.click();
   addContact();
   renderMainGroupList();
   editContact();
-  document.form.reset();
-
+  closeContactModal.click();
   addDropdown();
 });
-// очистка формы по клику
+// очистка формы по крестику
 closeContactModal.addEventListener('click', () => document.form.reset());
-// маска телефона
-const contactPhone = document.querySelector('#contactPhone');
 
+// редактирование и удаление контакта с главной страницы
+function editContact() {
+  let mainOptionContainer = document.querySelectorAll('.main-option-container');
+  groupsArray.forEach(function (item, index) {
+    mainOptionContainer[index].addEventListener('click', (e) => {
+      if (e.target.dataset.delete) {
+        item.groupContacts.forEach(function (el, i) {
+          if (el.id == e.target.id) {
+            item.groupContacts.splice(i, 1);
+          }
+        });
+        localStorage.setItem('groupsArray', JSON.stringify(groupsArray));
+        renderMainGroupList();
+        addDropdown();
+        editContact();
+      }
+
+      if (e.target.dataset.edit) {
+        item.groupContacts.forEach(function (el, i) {
+          if (el.id == e.target.id) {
+            document.getElementById('contactName').value = el.contactName;
+            document.getElementById('contactPhone').value = el.contactPhone;
+            // item.groupContacts.splice(i, 1);
+            dropdownGroup.value = item.groupName;
+            contactButton.click();
+          }
+        });
+      }
+    });
+  });
+}
+editContact();
+
+// маска телефона
 const prefixNumber = (str) => {
   if (str === '7') {
     return '7 (';
@@ -311,36 +339,3 @@ contactPhone.addEventListener('input', () => {
 document.getElementById('contactName').addEventListener('input', function () {
   this.value = this.value.replace(/[^a-zа-яё\s]/gi, '');
 });
-
-// редактирование и удаление контакта с главной страницы
-function editContact() {
-  let mainOptionContainer = document.querySelectorAll('.main-option-container');
-  groupsArray.forEach(function (item, index) {
-    mainOptionContainer[index].addEventListener('click', (e) => {
-      if (e.target.dataset.delete) {
-        item.groupContacts.forEach(function (el, i) {
-          if (el.id == e.target.id) {
-            item.groupContacts.splice(i, 1);
-          }
-        });
-        localStorage.setItem('groupsArray', JSON.stringify(groupsArray));
-        renderMainGroupList();
-        addDropdown();
-        editContact();
-      }
-
-      if (e.target.dataset.edit) {
-        item.groupContacts.forEach(function (el, i) {
-          if (el.id == e.target.id) {
-            document.getElementById('contactName').value = el.contactName;
-            document.getElementById('contactPhone').value = el.contactPhone;
-            item.groupContacts.splice(i, 1);
-            dropdownGroup.value = item.groupName;
-            contactButton.click();
-          }
-        });
-      }
-    });
-  });
-}
-editContact();
