@@ -21,6 +21,8 @@ let dropdownGroup = document.getElementById('dropdownGroup');
 let saveGroup = document.getElementById('saveGroup');
 let saveContact = document.getElementById('saveContact');
 
+let mainOptionContainer = document.querySelectorAll('.main-option-container');
+
 // unique id
 // переписать на класс
 let guidFactory = (function () {
@@ -79,25 +81,6 @@ function realGroupsArray() {
   newRequest = JSON.parse(newRequest);
   return newRequest;
 }
-
-// открытие и закрытие модалок контактов и групп
-// openGroupButton.addEventListener('click', () => {
-//   openGroupModal.classList.add('open');
-// });
-// openGroupModal.addEventListener('click', (e) => {
-//   if (e.target === openGroupModal || e.target === closeGroupModal) {
-//     openGroupModal.classList.remove('open');
-//   }
-// });
-
-// openContactButton.addEventListener('click', () => {
-//   openContactModal.classList.add('open');
-// });
-// openContactModal.addEventListener('click', (e) => {
-//   if (e.target === openContactModal || e.target === closeContactModal) {
-//     openContactModal.classList.remove('open');
-//   }
-// });
 
 // показ инпута для добавления группы
 openAddGroupButton.addEventListener('click', () => {
@@ -274,9 +257,15 @@ function addDropdown() {
   let mainDropdownContainers = document.querySelectorAll('.main-container');
 
   for (let item of mainDropdownContainers) {
+    let isOpen = true;
+    let itemHeight = item.lastElementChild.clientHeight;
+    item.lastElementChild.style.height = itemHeight + 'px';
     item.firstElementChild.onclick = () => {
       item.classList.toggle('active');
-      item.lastElementChild.classList.toggle('hidden');
+      isOpen = !isOpen;
+      isOpen
+        ? (item.lastElementChild.style.height = itemHeight + 'px')
+        : (item.lastElementChild.style.height = '0px');
     };
   }
 }
