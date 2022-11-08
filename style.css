@@ -1,12 +1,8 @@
-html {
-  max-width: 1920px;
-  font-style: normal;
-  overflow-x: hidden;
-  margin-right: calc(-1 * (100vw - 100%));
-}
 body {
   font-family: Arial;
   padding-bottom: 20px;
+  overflow-x: hidden;
+  margin-right: calc(-1 * (100vw - 100%));
 }
 .header {
   height: 70px;
@@ -21,7 +17,7 @@ body {
   width: 100%;
   height: 100%;
   margin: auto;
-  padding: 0;
+  padding: 0px;
   display: flex;
   justify-content: space-between;
 }
@@ -31,11 +27,19 @@ button {
   line-height: 18px;
   cursor: pointer;
 }
-
+svg,
+button {
+  transition: all 0.3s ease;
+}
 .header-contacts {
   display: flex;
   align-items: center;
   gap: 16px;
+}
+.main-container--name,
+.header-contacts,
+.main-container--number {
+  cursor: default;
 }
 .header-contacts--svg {
   margin: auto;
@@ -48,7 +52,7 @@ button {
 }
 .header-button {
   display: flex;
-  margin: auto 0;
+  margin: auto 0px;
   gap: 16px;
 }
 
@@ -57,7 +61,7 @@ button {
   height: 38px;
   color: white;
   border: none;
-  padding: 0 13px;
+  padding: 0px 13px;
 }
 
 .header-button--red {
@@ -85,16 +89,18 @@ button {
 /*main styles*/
 .main-text {
   display: inline-block;
-  margin: 35vh auto 0;
+  margin: 35vh auto 0px;
 
   font-weight: 400;
   font-size: 18px;
   line-height: 18px;
   opacity: 0.3;
 }
-
+.offcanvas.offcanvas-start {
+  max-width: 100%;
+  width: 312px;
+}
 .modal {
-  max-width: 312px;
   background-clip: padding-box;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 0.3rem;
@@ -106,8 +112,8 @@ button {
   height: 70px;
 }
 .modal_title {
-  margin-top: 0;
-  margin-bottom: 0;
+  margin-top: 0px;
+  margin-bottom: 0px;
   font-weight: 700;
   font-size: 18px;
   line-height: 120%;
@@ -115,7 +121,7 @@ button {
 
 .group-list {
   list-style-type: none;
-  padding: 0;
+  padding: 0px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -126,6 +132,7 @@ button {
   align-items: center;
   gap: 12px;
 }
+
 .item-input {
   display: none;
 }
@@ -149,7 +156,7 @@ button {
   height: 38px;
   background: none;
   border: none;
-  padding: 0;
+  padding: 0px;
 }
 svg {
   pointer-events: none;
@@ -172,7 +179,7 @@ svg {
 }
 .item-name--input {
   box-sizing: border-box;
-  padding: 0 0 0 12px;
+  padding: 0px 0px 0px 12px;
   border: none;
 }
 
@@ -213,7 +220,6 @@ svg {
 }
 
 .form-item {
-  max-width: 264px;
   width: 100%;
   color: rgba(0, 0, 0, 0.5);
   cursor: pointer;
@@ -230,7 +236,7 @@ svg {
   width: 100%;
   box-shadow: 0px 4px 20px rgb(0 0 0 / 20%);
   border-radius: 6px;
-  padding: 0 24px;
+  padding: 0px 24px;
   box-sizing: border-box;
 }
 .main-dropdown_button {
@@ -265,7 +271,7 @@ svg {
   display: flex;
   flex-direction: column;
   list-style-type: none;
-  padding: 0;
+  padding: 0px;
   gap: 24px;
   overflow: hidden;
   text-align: center;
@@ -278,8 +284,12 @@ svg {
   align-items: center;
   justify-content: space-between;
   gap: 24px;
+  transition: all 0.1s ease-in-out;
 }
-
+.option:hover {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 6px 6px 0px 0px;
+}
 .option:not(:last-child) {
   border-bottom: 1px solid rgba(0, 0, 0, 0.3);
 }
@@ -297,18 +307,30 @@ svg {
   align-items: center;
   gap: 8px;
 }
-.open {
-  visibility: visible;
-  opacity: 1;
-}
 .hidden {
-  visibility: hidden;
+  display: none;
 }
 
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 1200px) {
+  body {
+    margin: 0px 10px;
+  }
   .header {
-    height: 140px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+@media screen and (max-width: 700px) {
+}
+
+@media screen and (max-width: 500px) {
+  .header {
+    height: 150px;
     padding-top: 20px;
+  }
+  .offcanvas.offcanvas-start {
+    width: 100%;
   }
   .header-button {
     flex-direction: column;
@@ -316,6 +338,9 @@ svg {
   .container {
     flex-direction: column;
     align-items: center;
+  }
+  .item-name {
+    width: 100%;
   }
   .option {
     flex-direction: column;
