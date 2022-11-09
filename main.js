@@ -243,7 +243,11 @@ saveContact.addEventListener('click', () => {
   contactInfo.contactPhone = document.getElementById('contactPhone').value;
   let selectedGroup = dropdownGroup.value;
   for (let el of groupsArray) {
-    el.groupName === selectedGroup ? el.groupContacts.push(contactInfo) : null;
+    el.groupName === selectedGroup
+      ? contactInfo.contactName && contactInfo.contactPhone
+        ? el.groupContacts.push(contactInfo)
+        : null
+      : null;
   }
   localStorage.setItem('groupsArray', JSON.stringify(groupsArray));
   renderMainGroupList();
