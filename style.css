@@ -133,10 +133,7 @@ button {
 .main-container.active .chevron-icon {
   transform: translate(-100%, -50%);
 }
-.item-icon--blue:hover svg {
-  background: #005bfe;
-  border-radius: 6px;
-}
+
 .main-option-container {
   display: flex;
   flex-direction: column;
@@ -260,6 +257,10 @@ svg {
   background: #d1003e;
   border-radius: 6px;
 }
+.item-icon--blue:hover svg {
+  background: #005bfe;
+  border-radius: 6px;
+}
 .item-name--input {
   box-sizing: border-box;
   padding: 0px 0px 0px 12px;
@@ -310,6 +311,14 @@ svg {
 
 .hidden {
   display: none;
+}
+
+.button-hidden {
+  width: 0px;
+  height: 0px;
+  border: none;
+  opacity: 0;
+  visibility: hidden;
 }
 
 @media screen and (max-width: 1200px) {

@@ -17,6 +17,7 @@ let dropdownGroup = document.getElementById('dropdownGroup');
 
 let saveGroup = document.getElementById('saveGroup');
 let saveContact = document.getElementById('saveContact');
+let targetId;
 
 const contactPhone = document.querySelector('#contactPhone');
 
@@ -48,7 +49,7 @@ let groupsArray = [
     groupContacts: [
       {
         id: guidFactory.create(2),
-        contactName: 'Test Test Test',
+        contactName: 'fsf hgjh jhj',
         contactPhone: '+7 (777) 777-77-77',
       },
       {
@@ -64,12 +65,13 @@ let groupsArray = [
     groupContacts: [
       {
         id: guidFactory.create(2),
-        contactName: 'Test Test Test',
+        contactName: 'sfdsf Test Test',
         contactPhone: '+7 (777) 777-77-77',
       },
     ],
   },
 ];
+
 localStorage.setItem('groupsArray', JSON.stringify(groupsArray));
 // получаем актуальный массив из ЛС
 function realGroupsArray() {
@@ -138,7 +140,6 @@ function renderMainGroupList() {
                 fill="black" />
           </svg>
         </button>
-
         <button type="button" id="${el.id}" data-delete="true" class="item-icon"><svg width="38" height="38" viewBox="0 0 38 38" fill="none"
             xmlns="http://www.w3.org/2000/svg">
             <rect x="0.5" y="0.5" width="37" height="37" rx="5.5" />
@@ -180,20 +181,30 @@ function addDropdown() {
 }
 addDropdown();
 // добавление группы в массив
-groupInput.addEventListener('change', (e) => {
+groupInput.addEventListener('change', () => {
   if (groupInput.value.length) {
     groupsArray.push({
       id: guidFactory.create(1),
       groupName: groupInput.value,
       groupContacts: [],
     });
-    localStorage.setItem('groupsArray', JSON.stringify(groupsArray));
-
     renderGroupList();
     groupInput.value = '';
   }
 });
-
+// сохранение группы
+saveGroup.addEventListener('click', () => {
+  closeGroupModal.click();
+  dropdownGroup.innerHTML = `<option disabled selected>Выберите группу</option>
+  `;
+  localStorage.setItem('groupsArray', JSON.stringify(groupsArray));
+  realGroupsArray();
+  groupOtionsRendering();
+  renderMainGroupList();
+  editContact();
+  addDropdown();
+  deleteGroupInput.click();
+});
 // удаление группы
 groupList.addEventListener('click', (e) => {
   if (e.target.dataset) {
@@ -216,21 +227,16 @@ function groupOtionsRendering() {
   }
 }
 groupOtionsRendering();
-// сохранение группы
-saveGroup.addEventListener('click', () => {
-  closeGroupModal.click();
-  dropdownGroup.innerHTML = `<option disabled selected>Выберите группу</option>
-  `;
-  realGroupsArray();
-  groupOtionsRendering();
-  // openGroupModal.classList.remove('open');
-  renderMainGroupList();
-  editContact();
-  addDropdown();
-});
 
-// добавление контакта
-function addContact() {
+// сохранение контакта
+saveContact.addEventListener('click', () => {
+  if (targetId) {
+    groupsArray.forEach((item) =>
+      item.groupContacts.forEach((el, index) => {
+        el.id === targetId ? item.groupContacts.splice(index, 1) : null;
+      })
+    );
+  }
   let contactInfo = {};
   contactInfo.id = guidFactory.create(2);
   contactInfo.contactName = document.getElementById('contactName').value;
@@ -240,17 +246,21 @@ function addContact() {
     el.groupName === selectedGroup ? el.groupContacts.push(contactInfo) : null;
   }
   localStorage.setItem('groupsArray', JSON.stringify(groupsArray));
-}
-// сохранение контакта
-saveContact.addEventListener('click', () => {
-  addContact();
   renderMainGroupList();
   editContact();
   closeContactModal.click();
   addDropdown();
 });
-// очистка формы по крестику
-closeContactModal.addEventListener('click', () => document.form.reset());
+// очистка формы
+closeContactModal.addEventListener('click', () => {
+  document.form.reset();
+});
+contactButton.addEventListener('click', () => {
+  let gray = document.querySelector('.offcanvas-backdrop');
+  gray.addEventListener('click', () => {
+    document.form.reset();
+  });
+});
 
 // редактирование и удаление контакта с главной страницы
 function editContact() {
@@ -271,10 +281,10 @@ function editContact() {
 
       if (e.target.dataset.edit) {
         item.groupContacts.forEach(function (el, i) {
+          targetId = el.id;
           if (el.id == e.target.id) {
             document.getElementById('contactName').value = el.contactName;
             document.getElementById('contactPhone').value = el.contactPhone;
-            // item.groupContacts.splice(i, 1);
             dropdownGroup.value = item.groupName;
             contactButton.click();
           }
@@ -284,7 +294,6 @@ function editContact() {
   });
 }
 editContact();
-
 // маска телефона
 const prefixNumber = (str) => {
   if (str === '7') {
